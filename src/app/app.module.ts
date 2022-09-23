@@ -8,6 +8,7 @@ import { LoginPage } from './pages/login/login.page';
 import { PokemanCataloguePage } from './pages/pokeman-catalogue/pokeman-catalogue.page';
 import { TrainerPage } from './pages/trainer/trainer.page';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     AppRoutingModule,
   ],
   providers: [],

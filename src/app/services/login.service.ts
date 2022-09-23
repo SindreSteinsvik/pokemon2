@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Trainer } from '../models/trainer.model';
-import { map, Observable, of, switchMap } from  'rxjs';
+import { map, Observable, of, switchMap, tap } from  'rxjs';
 import {HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
+import { StorageUtil } from '../utils/storage.util';
+import { StorageKeys } from '../enums/storage-keys.enum';
 
 const {apiTrainers,apiKey} = environment;
 
@@ -15,7 +17,7 @@ export class LoginService {
   //dependency injection
   constructor(private readonly http: HttpClient) { }
 
-  //login
+  //login handling
   public login(username:string): Observable<Trainer>{  //function login, input username, output Obervable of type Trainer
     return this.checkTrainerName(username)
     .pipe(
@@ -23,7 +25,10 @@ export class LoginService {
         if (trainer === undefined){ //trainer does not exist
           return this.createTrainer(username) 
         }
-        return of(trainer)
+        return of(trainer);
+      }),
+      tap((trainer: Trainer) => {
+        StorageUtil.storageSave<Trainer>(StorageKeys.Trainer, trainer)
       })
     )
   }
@@ -37,7 +42,7 @@ export class LoginService {
   }
 
 
-  //if no exist: create user to api 
+  //Create user if none exist
   private createTrainer(username: string): Observable<Trainer>{
     //trainer
     const trainer = {

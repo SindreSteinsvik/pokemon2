@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Pokemon } from '../models/pokemon.model';
+import { Pokemon, PokemonResponse } from '../models/pokemon.model';
 
 const {apiPokemons} = environment
 
@@ -15,6 +15,7 @@ export class PokemonCatalogueService {
   private _pokemons: Pokemon[] = [];
   private _error: string = "";
   private _loading: boolean = false;
+  private _pokemon?: Pokemon;
 
   get pokemons(): Pokemon[] {
     return this._pokemons;
@@ -28,23 +29,33 @@ export class PokemonCatalogueService {
     return this._loading
   }
 
+  get pokemon(): Pokemon {
+    return this._pokemon!;
+  }
+
   constructor(private readonly http: HttpClient) { }
 
   public findAllPokemons():  void {
     this._loading = true;
-    this.http.get<Pokemon[]>(apiPokemons)
+    this.http.get<PokemonResponse>(apiPokemons)
     .pipe(
       finalize(() => {
         this._loading = false;
       })
     )
     .subscribe({
-      next: (pokemons: Pokemon[]) => {
-        this._pokemons = pokemons;
-      },
+      next: (response : PokemonResponse) => {
+        this._pokemons = response.results.map((pokemon) => {
+        return {
+          ...pokemon
+        };
+      }),
+      this._loading=false;
+    },
       error: (error: HttpErrorResponse) => {
         this._error = error.message;
-      }
-    })
+        this._loading = false;
+      },
+    });
   }
 }

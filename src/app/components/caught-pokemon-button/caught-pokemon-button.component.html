@@ -3,6 +3,15 @@
 <button 
     (click)="onFavoriteClick()"
     class= "border-slate-300 rounded flex justify-center items-center p-2 text-yellow-300">
-    <span class="material-icons">star</span>
+
+    <ng-container *ngIf="hasCaught; then favorite else notFavorite" class="material-icons"></ng-container>
+
+    <ng-template #favorite>
+        <span class="material-icons text-green-400">star</span>
+    </ng-template>
+    <ng-template #notFavorite>
+        <span class="material-icons">star_border</span>
+    </ng-template>
+
 </button>
 </aside>

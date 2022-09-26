@@ -1,0 +1,9 @@
+<li *ngIf ="pokemon" class="mb-3 shadow">
+    <section>
+        <img [src]="getImgLinkByUrl(pokemon)" [alt]="pokemon.name"/>
+    </section>
+    <section class="p-4">
+        <span>{{pokemon.name}} </span>
+    </section>
+
+</li>

@@ -35,6 +35,8 @@ export class PokemonCatalogueService {
 
   constructor(private readonly http: HttpClient) { }
 
+  
+
   public findAllPokemons():  void {
     this._loading = true;
     this.http.get<PokemonResponse>(apiPokemons)

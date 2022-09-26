@@ -5,7 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginPage } from './pages/login/login.page';
-import { PokemanCataloguePage } from './pages/pokeman-catalogue/pokeman-catalogue.page';
+import { PokemonCataloguePage } from './pages/pokemon-catalogue/pokemon-catalogue.page';
 import { TrainerPage } from './pages/trainer/trainer.page';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { PokemonListComponent } from './components/pokemon-list/pokemon-list.com
   declarations: [
     AppComponent,
     LoginPage,
-    PokemanCataloguePage,
+    PokemonCataloguePage,
     TrainerPage,
     LoginFormComponent,
     PokemonListComponent,

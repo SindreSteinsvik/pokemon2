@@ -15,12 +15,12 @@ export class TrainerService {
   }
 
   public set trainer(trainer: Trainer | undefined){
-    StorageUtil.storageSave<Trainer>(StorageKeys.Trainer,trainer!)
+    StorageUtil.LocalStorageSave<Trainer>(StorageKeys.Trainer,trainer!)
     this._trainer = trainer;
   }
 
   constructor() { 
-    this._trainer= StorageUtil.storageRead<Trainer>(StorageKeys.Trainer)
+    this._trainer= StorageUtil.LocalStorageRead<Trainer>(StorageKeys.Trainer)
   }
 
   public hasCaught(name: string): boolean {

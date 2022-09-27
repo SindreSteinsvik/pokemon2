@@ -1,8 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Pokemon, PokemonResponse } from '../models/pokemon.model';
+import { StorageUtil } from '../utils/storage.util';
+import { StorageKeys } from '../enums/storage-keys.enum';
+
+
 
 const {apiPokemons} = environment
 
@@ -12,13 +16,13 @@ const {apiPokemons} = environment
 })
 export class PokemonCatalogueService {
 
-  private _pokemons: Pokemon[] = [];
+  private readonly _pokemons = new BehaviorSubject<Pokemon[]>([]);
   private _error: string = "";
   private _loading: boolean = false;
   private _pokemon?: Pokemon;
 
   get pokemons(): Pokemon[] {
-    return this._pokemons;
+    return this._pokemons.getValue();
   }
 
   get error(): string{
@@ -33,45 +37,33 @@ export class PokemonCatalogueService {
     return this._pokemon!;
   }
 
-  constructor(private readonly http: HttpClient) { }
-
-  
+  constructor(private readonly http: HttpClient) {
+    const storedPokemons: Pokemon[] | undefined = StorageUtil.SessionStorageRead(StorageKeys.Pokemon)
+    if(storedPokemons === undefined) this.findAllPokemons()
+    else this._pokemons.next(storedPokemons)
+   }
 
   public findAllPokemons():  void {
-
-    if(this._pokemons.length > 0 || this.loading){
-      return;
-    }
-
-    this._loading = true;
-    this.http.get<PokemonResponse>(apiPokemons)
-    .pipe(
-      finalize(() => {
-        this._loading = false;
-      })
-    )
-    .subscribe({
-      next: (response : PokemonResponse) => {
-        this._pokemons = response.results.map((pokemon) => {
-        return {
-          ...pokemon
-        };
-      }),
-      this._loading=false;
-    },
-      error: (error: HttpErrorResponse) => {
-        this._error = error.message;
-        this._loading = false;
+      this._loading = true;
+      this.http.get<PokemonResponse>(apiPokemons)
+      .pipe(
+        finalize(() => {
+          this._loading = false;
+        })
+      )
+      .subscribe({
+        next: (response : PokemonResponse) => {
+          this._pokemons.next(response.results)
+          StorageUtil.SessionStorageSave(StorageKeys.Pokemon,this.pokemons)
       },
-    });
+        error: (error: HttpErrorResponse) => {
+          this._error = error.message;
+          this._loading = false;
+        },
+      });
   }
-
 
   pokemonByName(name: string): Pokemon | undefined {
-    return this._pokemons.find((pokemon: Pokemon) => pokemon.name === name)
+    return this.pokemons.find((pokemon: Pokemon) => pokemon.name === name)
   }
-
-
-
-
 }

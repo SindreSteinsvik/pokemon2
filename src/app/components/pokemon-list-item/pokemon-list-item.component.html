@@ -1,4 +1,4 @@
-<li *ngIf ="pokemon" class="mb-3 shadow bg-slate-50 rounded relative">
+<li *ngIf ="pokemon" class="mb-3 shadow bg-slate-50 rounded relative px-10">
     <app-caught-pokemon-button [pokemonName]="pokemon.name"></app-caught-pokemon-button>
     <section>
         <img [src]="getImgLinkByUrl(pokemon)" [alt]="pokemon.name" class="w-60"/>
@@ -6,5 +6,4 @@
     <section class="p-4">
         <span >{{getIdByUrl(pokemon)}}. {{pokemon.name | titlecase}} </span>
     </section>
-
 </li>

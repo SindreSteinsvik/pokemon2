@@ -1,4 +1,4 @@
-<form #loginForm="ngForm"(ngSubmit)="loginSubmit(loginForm)">
+
     <section class="h-full gradient-form bg-gray-200 md:h-screen">
         <div class="container py-12 px-6 h-full">
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -19,8 +19,9 @@
                         <fieldset>
                         <p class="mb-4">Trainer Name</p>
                         <div class="mb-4">
-                        
+                          <label for="username"></label>
                           <input
+                          
                             type="text"
                             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             ngModel
@@ -28,6 +29,8 @@
                             name="username" 
                             id="username" 
                             placeholder="Jonny"
+
+
                           />
                         </div>
                         <div class="text-center pt-1 mb-12 pb-1">
@@ -68,7 +71,7 @@
         </div>
       </section>
 
-    </form>
+    
 
 
 
@@ -78,17 +81,23 @@
 
 
 <!--...
+    <<form #loginForm="ngForm"(ngSubmit)="loginSubmit(loginForm)">
     <fieldset class="mb-3">
         <label for="username">Trainer Name</label>
         <input type="text"
         ngModel
-        #username="ngModel" 
-        name="username" 
-        id="username" 
-        class="border boarder-slate-300 p-2 rounded w-full" 
-        placeholder="jonny"/>
+        #username="ngModel"
+        name="username"
+        id="username"
+        class="border boarder-slate-300 p-2 rounded w-full"
+        placeholder="jonny"
+        required
+        minlength="3"/>
     </fieldset>
-    <button type="submit" class="bg-yellow-500 p-2 rounded  ">Login</button>
-
-    src="https://www.pngall.com/wp-content/uploads/4/Pokemon-Pokeball.png"
+    <div *ngIf="username.errors && (username.dirty || username.touched)">
+        <p *ngIf="username.errors?.['required']">Must fill in username</p>
+        <p *ngIf="username.errors?.['minlength']">Must be minimum 3 chars long</p>
+    </div>
+    <button type="submit" [disabled]="loginForm.invalid" class="bg-yellow-500 p-2 rounded  ">Login</button>
+</form>
 -->

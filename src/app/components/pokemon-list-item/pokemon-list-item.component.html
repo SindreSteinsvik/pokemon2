@@ -4,7 +4,7 @@
         <img [src]="getImgLinkByUrl(pokemon)" [alt]="pokemon.name" class="w-60"/>
     </section>
     <section class="p-4">
-        <span >{{pokemon.name}} </span>
+        <span >{{getIdByUrl(pokemon)}}. {{pokemon.name | titlecase}} </span>
     </section>
 
 </li>

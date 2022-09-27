@@ -22,6 +22,10 @@ export class PokemonListItemComponent implements OnInit {
     const url = apiPictures + id + ".png"
     return url
   }
+  getIdByUrl(pokemon:Pokemon): string {
+    const id = pokemon.url.split('/')[pokemon.url.split('/').length-2]
+    return id
+  }
 
   ngOnInit(): void {
   }

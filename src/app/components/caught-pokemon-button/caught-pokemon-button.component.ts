@@ -32,9 +32,20 @@ export class CaughtPokemonButtonComponent implements OnInit {
   }
 
   onFavoriteClick(): void {
+    console.log(this.router.url)
    
     if( this.router.url == "/trainer" ){
       this.trainerService.releasePokemon(this.pokemonName)
+      
+      this.caughtService.removeFromCaught()
+      .subscribe({
+        next: (response: Trainer) => {
+          alert("Removed a Pokemon: " + this.pokemonName)
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log("ERROR" + error.message)
+        }
+      })
     }else{
     this.caughtService.addToCaught(this.pokemonName)
     .subscribe({

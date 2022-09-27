@@ -28,6 +28,37 @@ export class CaughtService {
     private readonly http: HttpClient,
   ) {}
 
+    public removeFromCaught(): Observable<Trainer> {
+      if(!this.trainerService.trainer){
+        throw new Error("There is no trainer")
+      }
+
+      const trainer: Trainer = this.trainerService.trainer;
+
+      
+
+      const headers = new HttpHeaders({
+        "Content-Type": "application/json",
+        "x-api-key": apiKey
+      })
+
+      this._loading = true
+
+      return this.http.patch<Trainer>(`${apiTrainers}/${trainer.id}`, {
+        pokemon: [...trainer.pokemon]
+      },
+      {headers})
+      .pipe(
+        tap((updatedTrainer: Trainer) =>{
+          this.trainerService.trainer = updatedTrainer;
+  
+        }),
+        finalize(()=>{this._loading=false}))
+
+
+
+
+    }
 
    public addToCaught(name: string): Observable<Trainer> {
     if(!this.trainerService.trainer){

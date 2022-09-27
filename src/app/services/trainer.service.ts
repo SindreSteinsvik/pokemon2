@@ -30,4 +30,10 @@ export class TrainerService {
     return false
     
   }
+
+  public releasePokemon(name: string): void {
+    if(this._trainer){
+      this._trainer.pokemon = this._trainer.pokemon.filter((pokemon: Pokemon) => pokemon.name !== name);
+    }
+  }
 }

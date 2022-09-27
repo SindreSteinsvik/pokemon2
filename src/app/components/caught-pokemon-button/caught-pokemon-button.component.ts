@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Trainer } from 'src/app/models/trainer.model';
 import { CaughtService } from 'src/app/services/caught.service';
 import { TrainerService } from 'src/app/services/trainer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-caught-pokemon-button',
@@ -22,7 +23,8 @@ export class CaughtPokemonButtonComponent implements OnInit {
 
   constructor(
     private readonly trainerService: TrainerService,
-    private readonly caughtService: CaughtService
+    private readonly caughtService: CaughtService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +33,9 @@ export class CaughtPokemonButtonComponent implements OnInit {
 
   onFavoriteClick(): void {
    
+    if( this.router.url == "/trainer" ){
+      this.trainerService.releasePokemon(this.pokemonName)
+    }else{
     this.caughtService.addToCaught(this.pokemonName)
     .subscribe({
       next: (response: Trainer) => {
@@ -42,5 +47,6 @@ export class CaughtPokemonButtonComponent implements OnInit {
       }
     })
   }
+}
 
 }

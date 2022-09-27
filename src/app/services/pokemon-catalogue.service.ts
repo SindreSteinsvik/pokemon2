@@ -38,6 +38,11 @@ export class PokemonCatalogueService {
   
 
   public findAllPokemons():  void {
+
+    if(this._pokemons.length > 0 || this.loading){
+      return;
+    }
+
     this._loading = true;
     this.http.get<PokemonResponse>(apiPokemons)
     .pipe(
